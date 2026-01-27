@@ -871,8 +871,8 @@ namespace FTN.Common
             typeIdsInInsertOrder.Add(ModelCode.ASSET);
             typeIdsInInsertOrder.Add(ModelCode.ASSETINFO);
             typeIdsInInsertOrder.Add(ModelCode.MANUFACTURER);
-            typeIdsInInsertOrder.Add(ModelCode.ASSETOWNER);
             typeIdsInInsertOrder.Add(ModelCode.PRODUCTASSETMODEL);
+            typeIdsInInsertOrder.Add(ModelCode.ASSETOWNER);
         }
 
 		private void InitializeNotSettablePropertyIds()
