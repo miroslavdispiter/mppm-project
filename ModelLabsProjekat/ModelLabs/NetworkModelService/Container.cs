@@ -9,8 +9,8 @@ using System.Text;
 using System.Xml;
 using FTN.Common;
 using FTN.Services.NetworkModelService.DataModel.Core;
-using FTN.Services.NetworkModelService.DataModel.Wires;
 using FTN.Services.NetworkModelService.DataModel;
+using FTN.Services.NetworkModelService.DataModel.Assets;
 
 
 namespace FTN.Services.NetworkModelService
@@ -122,21 +122,21 @@ namespace FTN.Services.NetworkModelService
 			IdentifiedObject io = null;			
 			switch ((DMSType)type)
 			{
-				case DMSType.BASEVOLTAGE:
-					io = new BaseVoltage(globalId);
+				case DMSType.SEAL:
+					io = new Seal(globalId);
 					break;
 
-				case DMSType.LOCATION:
-					io = new Location(globalId);
+				case DMSType.ASSETFUNCTION:
+					io = new AssetFunction(globalId);
 					break;
-				case DMSType.POWERTR:
-					io = new PowerTransformer(globalId);
+				case DMSType.ASSET:
+					io = new Asset(globalId);
 					break;
-				case DMSType.POWERTRWINDING:
-					io = new TransformerWinding(globalId);
+				case DMSType.MANUFACTURER:
+					io = new Manufacturer(globalId);
 					break;
-				case DMSType.WINDINGTEST:
-					io = new WindingTest(globalId);
+				case DMSType.PRODUCTASSETMODEL:
+					io = new ProductAssetModel(globalId);
 					break;			
 
 				default:					

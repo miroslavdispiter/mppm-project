@@ -1,20 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using FTN.Common;
+using FTN.Services.NetworkModelService.DataModel.Core;
 
 namespace FTN.Services.NetworkModelService.DataModel.Assets
 {
     public class Asset : IdentifiedObject
     {
         private bool critical;
-        private string initialCondition;
-        private string lotNumber;
-        private string serialNumber;
-        private string type;
-        private string utcNumber;
-
-        private long assetInfo;                       // 0..1
-        private List<long> organisationRoles = new();  // 0..n
+        private string initialCondition = string.Empty;
+        private string lotNumber = string.Empty;
+        private string serialNumber = string.Empty;
+        private string type = string.Empty;
+        private string utcNumber = string.Empty;
+        private long assetInfo = 0;
+        private List<long> organisationRoles = new List<long>();
 
         public Asset(long globalId) : base(globalId) { }
 
@@ -24,24 +24,29 @@ namespace FTN.Services.NetworkModelService.DataModel.Assets
         public string SerialNumber { get => serialNumber; set => serialNumber = value; }
         public string Type { get => type; set => type = value; }
         public string UtcNumber { get => utcNumber; set => utcNumber = value; }
-
         public long AssetInfo { get => assetInfo; set => assetInfo = value; }
         public List<long> OrganisationRoles { get => organisationRoles; set => organisationRoles = value; }
 
         public override bool Equals(object obj)
         {
-            return obj is Asset x &&
-                base.Equals(x) &&
-                x.critical == critical &&
-                x.initialCondition == initialCondition &&
-                x.lotNumber == lotNumber &&
-                x.serialNumber == serialNumber &&
-                x.type == type &&
-                x.utcNumber == utcNumber &&
-                x.assetInfo == assetInfo &&
-                CompareHelper.CompareLists(x.organisationRoles, organisationRoles);
+            if (base.Equals(obj))
+            {
+                Asset x = (Asset)obj;
+                return (x.critical == this.critical &&
+                        x.initialCondition == this.initialCondition &&
+                        x.lotNumber == this.lotNumber &&
+                        x.serialNumber == this.serialNumber &&
+                        x.type == this.type &&
+                        x.utcNumber == this.utcNumber &&
+                        x.assetInfo == this.assetInfo &&
+                        CompareHelper.CompareLists(x.organisationRoles, this.organisationRoles, true));
+            }
+            return false;
         }
 
+        public override int GetHashCode() => base.GetHashCode();
+
+        #region Access
         public override bool HasProperty(ModelCode t)
         {
             switch (t)
@@ -90,34 +95,48 @@ namespace FTN.Services.NetworkModelService.DataModel.Assets
                 default: base.SetProperty(property); break;
             }
         }
+        #endregion
 
+        #region References
         public override bool IsReferenced => organisationRoles.Count > 0 || base.IsReferenced;
 
-        public override void GetReferences(Dictionary<ModelCode, List<long>> refs, TypeOfReference t)
+        public override void GetReferences(Dictionary<ModelCode, List<long>> references, TypeOfReference refType)
         {
-            if (assetInfo != 0 && (t == TypeOfReference.Reference || t == TypeOfReference.Both))
-                refs[ModelCode.ASSET_ASSETINFO] = new() { assetInfo };
+            if (assetInfo != 0 && (refType == TypeOfReference.Reference || refType == TypeOfReference.Both))
+                references[ModelCode.ASSET_ASSETINFO] = new List<long> { assetInfo };
 
-            if (organisationRoles.Count > 0 && (t == TypeOfReference.Target || t == TypeOfReference.Both))
-                refs[ModelCode.ASSET_ORGANISATIONROLES] = new List<long>(organisationRoles);
+            if (organisationRoles.Count > 0 && (refType == TypeOfReference.Target || refType == TypeOfReference.Both))
+                references[ModelCode.ASSET_ORGANISATIONROLES] = organisationRoles;
 
-            base.GetReferences(refs, t);
+            base.GetReferences(references, refType);
         }
 
-        public override void AddReference(ModelCode refId, long gid)
+        public override void AddReference(ModelCode referenceId, long globalId)
         {
-            if (refId == ModelCode.ASSETORGANISATIONROLE_ASSETS)
-                organisationRoles.Add(gid);
-            else
-                base.AddReference(refId, gid);
+            switch (referenceId)
+            {
+                case ModelCode.ASSETORGANISATIONROLE_ASSET:
+                    organisationRoles.Add(globalId);
+                    break;
+                default:
+                    base.AddReference(referenceId, globalId);
+                    break;
+            }
         }
 
-        public override void RemoveReference(ModelCode refId, long gid)
+        public override void RemoveReference(ModelCode referenceId, long globalId)
         {
-            if (refId == ModelCode.ASSETORGANISATIONROLE_ASSETS)
-                organisationRoles.Remove(gid);
-            else
-                base.RemoveReference(refId, gid);
+            switch (referenceId)
+            {
+                case ModelCode.ASSETORGANISATIONROLE_ASSET:
+                    if (organisationRoles.Contains(globalId))
+                        organisationRoles.Remove(globalId);
+                    break;
+                default:
+                    base.RemoveReference(referenceId, globalId);
+                    break;
+            }
         }
+        #endregion
     }
 }

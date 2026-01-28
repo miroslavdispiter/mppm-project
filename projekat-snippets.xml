@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:cim="http://ftn#">
+
+    <cim:Manufacturer rdf:ID="Manufacturer1">
+        <cim:IdentifiedObject.aliasName>ABC MFG</cim:IdentifiedObject.aliasName>
+        <cim:IdentifiedObject.mRID>manu-001</cim:IdentifiedObject.mRID>
+        <cim:IdentifiedObject.name>ABC Manufacturing</cim:IdentifiedObject.name>
+    </cim:Manufacturer>
+
+    <cim:Manufacturer rdf:ID="Manufacturer2">
+        <cim:IdentifiedObject.aliasName>DEF Corp</cim:IdentifiedObject.aliasName>
+        <cim:IdentifiedObject.mRID>manu-002</cim:IdentifiedObject.mRID>
+        <cim:IdentifiedObject.name>DEF Corporation</cim:IdentifiedObject.name>
+    </cim:Manufacturer>
+
+    <cim:ProductAssetModel rdf:ID="ProductModel1">
+        <cim:ProductAssetModel.corporateStandardKind>standard</cim:ProductAssetModel.corporateStandardKind>
+        <cim:ProductAssetModel.Manufacturer rdf:resource="#Manufacturer1"/>
+        <cim:ProductAssetModel.modelNumber>TX100</cim:ProductAssetModel.modelNumber>
+        <cim:ProductAssetModel.modelVersion>1.0</cim:ProductAssetModel.modelVersion>
+        <cim:ProductAssetModel.usageKind>distributionOverhead</cim:ProductAssetModel.usageKind>
+        <cim:IdentifiedObject.aliasName>Model TX100</cim:IdentifiedObject.aliasName>
+        <cim:IdentifiedObject.mRID>pamodel-001</cim:IdentifiedObject.mRID>
+        <cim:IdentifiedObject.name>Standard Overhead Model</cim:IdentifiedObject.name>
+    </cim:ProductAssetModel>
+
+    <cim:ProductAssetModel rdf:ID="ProductModel2">
+        <cim:ProductAssetModel.corporateStandardKind>experimental</cim:ProductAssetModel.corporateStandardKind>
+        <cim:ProductAssetModel.Manufacturer rdf:resource="#Manufacturer2"/>
+        <cim:ProductAssetModel.modelNumber>TX250</cim:ProductAssetModel.modelNumber>
+        <cim:ProductAssetModel.modelVersion>2.1</cim:ProductAssetModel.modelVersion>
+        <cim:ProductAssetModel.usageKind>substation</cim:ProductAssetModel.usageKind>
+        <cim:IdentifiedObject.aliasName>Model TX250</cim:IdentifiedObject.aliasName>
+        <cim:IdentifiedObject.mRID>pamodel-002</cim:IdentifiedObject.mRID>
+        <cim:IdentifiedObject.name>Substation Model Experimental</cim:IdentifiedObject.name>
+    </cim:ProductAssetModel>
+
+    <cim:AssetOwner rdf:ID="AssetOwner1">
+        <cim:IdentifiedObject.aliasName>Utility West</cim:IdentifiedObject.aliasName>
+        <cim:IdentifiedObject.mRID>owner-001</cim:IdentifiedObject.mRID>
+        <cim:IdentifiedObject.name>Utility Company West</cim:IdentifiedObject.name>
+    </cim:AssetOwner>
+
+    <cim:AssetOwner rdf:ID="AssetOwner2">
+        <cim:IdentifiedObject.aliasName>Utility East</cim:IdentifiedObject.aliasName>
+        <cim:IdentifiedObject.mRID>owner-002</cim:IdentifiedObject.mRID>
+        <cim:IdentifiedObject.name>Utility Company East</cim:IdentifiedObject.name>
+    </cim:AssetOwner>
+
+    <cim:Asset rdf:ID="Asset1">
+        <cim:Asset.AssetInfo rdf:resource="#ProductModel1"/>
+        <cim:Asset.critical>true</cim:Asset.critical>
+        <cim:Asset.initialCondition>new</cim:Asset.initialCondition>
+        <cim:Asset.lotNumber>Lot-2024-A1</cim:Asset.lotNumber>
+        <cim:Asset.OrganisationRoles rdf:resource="#AssetOwner1"/>
+        <cim:Asset.serialNumber>SN-A100</cim:Asset.serialNumber>
+        <cim:Asset.type>TransformerTypeA</cim:Asset.type>
+        <cim:Asset.utcNumber>UTC000123</cim:Asset.utcNumber>
+        <cim:IdentifiedObject.aliasName>Main Transformer</cim:IdentifiedObject.aliasName>
+        <cim:IdentifiedObject.mRID>asset-001</cim:IdentifiedObject.mRID>
+        <cim:IdentifiedObject.name>Transformer A1</cim:IdentifiedObject.name>
+    </cim:Asset>
+
+    <cim:Asset rdf:ID="Asset2">
+        <cim:Asset.AssetInfo rdf:resource="#ProductModel2"/>
+        <cim:Asset.critical>false</cim:Asset.critical>
+        <cim:Asset.initialCondition>used</cim:Asset.initialCondition>
+        <cim:Asset.lotNumber>Lot-2023-B2</cim:Asset.lotNumber>
+        <cim:Asset.OrganisationRoles rdf:resource="#AssetOwner2"/>
+        <cim:Asset.serialNumber>SN-B200</cim:Asset.serialNumber>
+        <cim:Asset.type>TransformerTypeB</cim:Asset.type>
+        <cim:Asset.utcNumber>UTC000456</cim:Asset.utcNumber>
+        <cim:IdentifiedObject.aliasName>Backup Transformer</cim:IdentifiedObject.aliasName>
+        <cim:IdentifiedObject.mRID>asset-002</cim:IdentifiedObject.mRID>
+        <cim:IdentifiedObject.name>Transformer B2</cim:IdentifiedObject.name>
+    </cim:Asset>
+
+    <cim:AssetFunction rdf:ID="AssetFunction1">
+        <cim:AssetFunction.configID>Config-A1</cim:AssetFunction.configID>
+        <cim:AssetFunction.firmwareID>FW-11.3</cim:AssetFunction.firmwareID>
+        <cim:AssetFunction.hardwareID>HW-V2</cim:AssetFunction.hardwareID>
+        <cim:AssetFunction.password>1234</cim:AssetFunction.password>
+        <cim:AssetFunction.programID>ProgramAlpha</cim:AssetFunction.programID>
+        <cim:IdentifiedObject.aliasName>Protection logic</cim:IdentifiedObject.aliasName>
+        <cim:IdentifiedObject.mRID>func-001</cim:IdentifiedObject.mRID>
+        <cim:IdentifiedObject.name>Protection Function A1</cim:IdentifiedObject.name>
+    </cim:AssetFunction>
+
+    <cim:AssetFunction rdf:ID="AssetFunction2">
+        <cim:AssetFunction.configID>Config-B1</cim:AssetFunction.configID>
+        <cim:AssetFunction.firmwareID>FW-09.8</cim:AssetFunction.firmwareID>
+        <cim:AssetFunction.hardwareID>HW-V1</cim:AssetFunction.hardwareID>
+        <cim:AssetFunction.password>abcd</cim:AssetFunction.password>
+        <cim:AssetFunction.programID>ProgramBeta</cim:AssetFunction.programID>
+        <cim:IdentifiedObject.aliasName>Control logic</cim:IdentifiedObject.aliasName>
+        <cim:IdentifiedObject.mRID>func-002</cim:IdentifiedObject.mRID>
+        <cim:IdentifiedObject.name>Control Function B2</cim:IdentifiedObject.name>
+    </cim:AssetFunction>
+
+    <cim:Seal rdf:ID="Seal1">
+        <cim:Seal.condition>locked</cim:Seal.condition>
+        <cim:Seal.kind>steel</cim:Seal.kind>
+        <cim:Seal.sealNumber>SEAL-111</cim:Seal.sealNumber>
+        <cim:IdentifiedObject.aliasName>Main Cabinet Seal</cim:IdentifiedObject.aliasName>
+        <cim:IdentifiedObject.mRID>seal-001</cim:IdentifiedObject.mRID>
+        <cim:IdentifiedObject.name>Cabinet Seal 1</cim:IdentifiedObject.name>
+    </cim:Seal>
+
+    <cim:Seal rdf:ID="Seal2">
+        <cim:Seal.condition>broken</cim:Seal.condition>
+        <cim:Seal.kind>lead</cim:Seal.kind>
+        <cim:Seal.sealNumber>SEAL-222</cim:Seal.sealNumber>
+        <cim:IdentifiedObject.aliasName>Meter Seal</cim:IdentifiedObject.aliasName>
+        <cim:IdentifiedObject.mRID>seal-002</cim:IdentifiedObject.mRID>
+        <cim:IdentifiedObject.name>Meter Seal 2</cim:IdentifiedObject.name>
+    </cim:Seal>
+
+</rdf:RDF>

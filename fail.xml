@@ -1,0 +1,6 @@
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:cim="http://ftn.uns.ac.rs/CIM100#">
+  <cim:Asset rdf:about="#AssetTest1">
+    <cim:IdentifiedObject.name>TestAsset</cim:IdentifiedObject.name>
+  </cim:Asset>
+</rdf:RDF>

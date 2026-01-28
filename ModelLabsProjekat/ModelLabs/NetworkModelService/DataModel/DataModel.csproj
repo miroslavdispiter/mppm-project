@@ -92,7 +92,14 @@
     <Compile Include="Assets\Asset.cs" />
     <Compile Include="Assets\AssetFunction.cs" />
     <Compile Include="Assets\AssetInfo.cs" />
+    <Compile Include="Assets\AssetModel.cs" />
+    <Compile Include="Assets\AssetOrganisationRole.cs" />
+    <Compile Include="Assets\AssetOwner.cs" />
+    <Compile Include="Assets\Manufacturer.cs" />
+    <Compile Include="Assets\OrganisationRole.cs" />
+    <Compile Include="Assets\ProductAssetModel.cs" />
     <Compile Include="Assets\Seal.cs" />
+    <Compile Include="Core\IdentifiedObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -123,9 +130,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Core\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

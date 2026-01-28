@@ -1,15 +1,16 @@
 ﻿using System;
 using FTN.Common;
+using FTN.Services.NetworkModelService.DataModel.Core;
 
 namespace FTN.Services.NetworkModelService.DataModel.Assets
 {
     public class AssetFunction : IdentifiedObject
     {
-        private string configID;
-        private string firmwareID;
-        private string hardwareID;
-        private string password;
-        private string programID;
+        private string configID = string.Empty;
+        private string firmwareID = string.Empty;
+        private string hardwareID = string.Empty;
+        private string password = string.Empty;
+        private string programID = string.Empty;
 
         public AssetFunction(long globalId) : base(globalId) { }
 
@@ -18,6 +19,22 @@ namespace FTN.Services.NetworkModelService.DataModel.Assets
         public string HardwareID { get => hardwareID; set => hardwareID = value; }
         public string Password { get => password; set => password = value; }
         public string ProgramID { get => programID; set => programID = value; }
+
+        public override bool Equals(object obj)
+        {
+            if (base.Equals(obj))
+            {
+                AssetFunction x = (AssetFunction)obj;
+                return (x.configID == this.configID &&
+                        x.firmwareID == this.firmwareID &&
+                        x.hardwareID == this.hardwareID &&
+                        x.password == this.password &&
+                        x.programID == this.programID);
+            }
+            return false;
+        }
+
+        public override int GetHashCode() => base.GetHashCode();
 
         public override bool HasProperty(ModelCode t)
         {

@@ -1,41 +1,42 @@
 ﻿using System;
 using FTN.Common;
+using FTN.Services.NetworkModelService.DataModel.Core;
 
 namespace FTN.Services.NetworkModelService.DataModel.Assets
 {
     public class Seal : IdentifiedObject
     {
-        private string sealNumber;
         private SealConditionKind condition;
         private SealKind kind;
+        private string sealNumber = string.Empty;
 
         public Seal(long globalId) : base(globalId) { }
 
-        public string SealNumber
+        public SealConditionKind Condition { get => condition; set => condition = value; }
+        public SealKind Kind { get => kind; set => kind = value; }
+        public string SealNumber { get => sealNumber; set => sealNumber = value; }
+
+        public override bool Equals(object obj)
         {
-            get => sealNumber;
-            set => sealNumber = value;
+            if (base.Equals(obj))
+            {
+                Seal x = (Seal)obj;
+                return condition == x.condition &&
+                       kind == x.kind &&
+                       sealNumber == x.sealNumber;
+            }
+            return false;
         }
 
-        public SealConditionKind Condition
-        {
-            get => condition;
-            set => condition = value;
-        }
-
-        public SealKind Kind
-        {
-            get => kind;
-            set => kind = value;
-        }
+        public override int GetHashCode() => base.GetHashCode();
 
         public override bool HasProperty(ModelCode t)
         {
             switch (t)
             {
-                case ModelCode.SEAL_SEALNUMBER:
                 case ModelCode.SEAL_CONDITION:
                 case ModelCode.SEAL_KIND:
+                case ModelCode.SEAL_SEALNUMBER:
                     return true;
                 default:
                     return base.HasProperty(t);
@@ -46,18 +47,10 @@ namespace FTN.Services.NetworkModelService.DataModel.Assets
         {
             switch (prop.Id)
             {
-                case ModelCode.SEAL_SEALNUMBER:
-                    prop.SetValue(sealNumber);
-                    break;
-                case ModelCode.SEAL_CONDITION:
-                    prop.SetValue((short)condition);
-                    break;
-                case ModelCode.SEAL_KIND:
-                    prop.SetValue((short)kind);
-                    break;
-                default:
-                    base.GetProperty(prop);
-                    break;
+                case ModelCode.SEAL_CONDITION: prop.SetValue((short)condition); break;
+                case ModelCode.SEAL_KIND: prop.SetValue((short)kind); break;
+                case ModelCode.SEAL_SEALNUMBER: prop.SetValue(sealNumber); break;
+                default: base.GetProperty(prop); break;
             }
         }
 
@@ -65,18 +58,10 @@ namespace FTN.Services.NetworkModelService.DataModel.Assets
         {
             switch (property.Id)
             {
-                case ModelCode.SEAL_SEALNUMBER:
-                    sealNumber = property.AsString();
-                    break;
-                case ModelCode.SEAL_CONDITION:
-                    condition = (SealConditionKind)property.AsEnum();
-                    break;
-                case ModelCode.SEAL_KIND:
-                    kind = (SealKind)property.AsEnum();
-                    break;
-                default:
-                    base.SetProperty(property);
-                    break;
+                case ModelCode.SEAL_CONDITION: condition = (SealConditionKind)property.AsEnum(); break;
+                case ModelCode.SEAL_KIND: kind = (SealKind)property.AsEnum(); break;
+                case ModelCode.SEAL_SEALNUMBER: sealNumber = property.AsString(); break;
+                default: base.SetProperty(property); break;
             }
         }
     }
