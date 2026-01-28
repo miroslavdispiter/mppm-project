@@ -125,7 +125,6 @@ namespace FTN.Services.NetworkModelService
 				case DMSType.SEAL:
 					io = new Seal(globalId);
 					break;
-
 				case DMSType.ASSETFUNCTION:
 					io = new AssetFunction(globalId);
 					break;
@@ -137,9 +136,12 @@ namespace FTN.Services.NetworkModelService
 					break;
 				case DMSType.PRODUCTASSETMODEL:
 					io = new ProductAssetModel(globalId);
-					break;			
+					break;
+                case DMSType.ASSETOWNER:
+                    io = new AssetOwner(globalId);
+                    break;
 
-				default:					
+                default:					
 					string message = String.Format("Failed to create entity because specified type ({0}) is not supported.", type);
 					CommonTrace.WriteTrace(CommonTrace.TraceError, message);
 					throw new Exception(message);					

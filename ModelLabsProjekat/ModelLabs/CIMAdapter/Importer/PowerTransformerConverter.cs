@@ -1,11 +1,12 @@
 ﻿namespace FTN.ESI.SIMES.CIM.CIMAdapter.Importer
 {
 	using FTN.Common;
+    using System.Collections.Generic;
 
-	/// <summary>
-	/// PowerTransformerConverter has methods for populating
-	/// ResourceDescription objects using PowerTransformerCIMProfile_Labs objects.
-	/// </summary>
+    /// <summary>
+    /// PowerTransformerConverter has methods for populating
+    /// ResourceDescription objects using PowerTransformerCIMProfile_Labs objects.
+    /// </summary>
 	public static class PowerTransformerConverter
 	{
 

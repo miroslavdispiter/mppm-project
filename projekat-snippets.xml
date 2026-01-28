@@ -14,6 +14,12 @@
         <cim:IdentifiedObject.name>DEF Corporation</cim:IdentifiedObject.name>
     </cim:Manufacturer>
 
+    <cim:Manufacturer rdf:ID="Manufacturer3">
+        <cim:IdentifiedObject.aliasName>GHI Industrials</cim:IdentifiedObject.aliasName>
+        <cim:IdentifiedObject.mRID>manu-003</cim:IdentifiedObject.mRID>
+        <cim:IdentifiedObject.name>GHI Industrials Ltd</cim:IdentifiedObject.name>
+    </cim:Manufacturer>
+
     <cim:ProductAssetModel rdf:ID="ProductModel1">
         <cim:ProductAssetModel.corporateStandardKind>standard</cim:ProductAssetModel.corporateStandardKind>
         <cim:ProductAssetModel.Manufacturer rdf:resource="#Manufacturer1"/>
@@ -36,6 +42,17 @@
         <cim:IdentifiedObject.name>Substation Model Experimental</cim:IdentifiedObject.name>
     </cim:ProductAssetModel>
 
+    <cim:ProductAssetModel rdf:ID="ProductModel3">
+        <cim:ProductAssetModel.corporateStandardKind>other</cim:ProductAssetModel.corporateStandardKind>
+        <cim:ProductAssetModel.Manufacturer rdf:resource="#Manufacturer3"/>
+        <cim:ProductAssetModel.modelNumber>TX400</cim:ProductAssetModel.modelNumber>
+        <cim:ProductAssetModel.modelVersion>3.0</cim:ProductAssetModel.modelVersion>
+        <cim:ProductAssetModel.usageKind>transmission</cim:ProductAssetModel.usageKind>
+        <cim:IdentifiedObject.aliasName>Model TX400</cim:IdentifiedObject.aliasName>
+        <cim:IdentifiedObject.mRID>pamodel-003</cim:IdentifiedObject.mRID>
+        <cim:IdentifiedObject.name>High‑Capacity Industrial Model</cim:IdentifiedObject.name>
+    </cim:ProductAssetModel>
+
     <cim:AssetOwner rdf:ID="AssetOwner1">
         <cim:IdentifiedObject.aliasName>Utility West</cim:IdentifiedObject.aliasName>
         <cim:IdentifiedObject.mRID>owner-001</cim:IdentifiedObject.mRID>
@@ -46,6 +63,12 @@
         <cim:IdentifiedObject.aliasName>Utility East</cim:IdentifiedObject.aliasName>
         <cim:IdentifiedObject.mRID>owner-002</cim:IdentifiedObject.mRID>
         <cim:IdentifiedObject.name>Utility Company East</cim:IdentifiedObject.name>
+    </cim:AssetOwner>
+
+    <cim:AssetOwner rdf:ID="AssetOwner3">
+        <cim:IdentifiedObject.aliasName>Utility Central</cim:IdentifiedObject.aliasName>
+        <cim:IdentifiedObject.mRID>owner-003</cim:IdentifiedObject.mRID>
+        <cim:IdentifiedObject.name>Utility Company Central</cim:IdentifiedObject.name>
     </cim:AssetOwner>
 
     <cim:Asset rdf:ID="Asset1">
@@ -74,6 +97,34 @@
         <cim:IdentifiedObject.aliasName>Backup Transformer</cim:IdentifiedObject.aliasName>
         <cim:IdentifiedObject.mRID>asset-002</cim:IdentifiedObject.mRID>
         <cim:IdentifiedObject.name>Transformer B2</cim:IdentifiedObject.name>
+    </cim:Asset>
+
+    <cim:Asset rdf:ID="Asset3">
+        <cim:Asset.AssetInfo rdf:resource="#ProductModel3"/>
+        <cim:Asset.critical>true</cim:Asset.critical>
+        <cim:Asset.initialCondition>new</cim:Asset.initialCondition>
+        <cim:Asset.lotNumber>Lot-2024-C3</cim:Asset.lotNumber>
+        <cim:Asset.OrganisationRoles rdf:resource="#AssetOwner3"/>
+        <cim:Asset.serialNumber>SN-C300</cim:Asset.serialNumber>
+        <cim:Asset.type>IndustrialTransformer</cim:Asset.type>
+        <cim:Asset.utcNumber>UTC000789</cim:Asset.utcNumber>
+        <cim:IdentifiedObject.aliasName>Industrial Transformer</cim:IdentifiedObject.aliasName>
+        <cim:IdentifiedObject.mRID>asset-003</cim:IdentifiedObject.mRID>
+        <cim:IdentifiedObject.name>Transformer C3</cim:IdentifiedObject.name>
+    </cim:Asset>
+
+    <cim:Asset rdf:ID="Asset4">
+        <cim:Asset.AssetInfo rdf:resource="#ProductModel1"/>
+        <cim:Asset.critical>false</cim:Asset.critical>
+        <cim:Asset.initialCondition>maintenance</cim:Asset.initialCondition>
+        <cim:Asset.lotNumber>Lot-2022-D4</cim:Asset.lotNumber>
+        <cim:Asset.OrganisationRoles rdf:resource="#AssetOwner1"/>
+        <cim:Asset.serialNumber>SN-D400</cim:Asset.serialNumber>
+        <cim:Asset.type>SpareUnit</cim:Asset.type>
+        <cim:Asset.utcNumber>UTC000999</cim:Asset.utcNumber>
+        <cim:IdentifiedObject.aliasName>Reserve Unit</cim:IdentifiedObject.aliasName>
+        <cim:IdentifiedObject.mRID>asset-004</cim:IdentifiedObject.mRID>
+        <cim:IdentifiedObject.name>Spare Transformer D4</cim:IdentifiedObject.name>
     </cim:Asset>
 
     <cim:AssetFunction rdf:ID="AssetFunction1">
@@ -114,6 +165,15 @@
         <cim:IdentifiedObject.aliasName>Meter Seal</cim:IdentifiedObject.aliasName>
         <cim:IdentifiedObject.mRID>seal-002</cim:IdentifiedObject.mRID>
         <cim:IdentifiedObject.name>Meter Seal 2</cim:IdentifiedObject.name>
+    </cim:Seal>
+
+    <cim:Seal rdf:ID="Seal3">
+        <cim:Seal.condition>locked</cim:Seal.condition>
+        <cim:Seal.kind>other</cim:Seal.kind>
+        <cim:Seal.sealNumber>SEAL-333</cim:Seal.sealNumber>
+        <cim:IdentifiedObject.aliasName>Spare Transformer Seal</cim:IdentifiedObject.aliasName>
+        <cim:IdentifiedObject.mRID>seal-003</cim:IdentifiedObject.mRID>
+        <cim:IdentifiedObject.name>Transformer D4 Seal</cim:IdentifiedObject.name>
     </cim:Seal>
 
 </rdf:RDF>
