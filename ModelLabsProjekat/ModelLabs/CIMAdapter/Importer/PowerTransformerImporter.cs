@@ -117,13 +117,13 @@ namespace FTN.ESI.SIMES.CIM.CIMAdapter.Importer
                 return;
             }
 
-            foreach (var pair in cimSeals)
+            foreach (KeyValuePair<string, object> cimSealPair in cimSeals)
             {
-                FTN.Seal cimSeal = pair.Value as FTN.Seal;
+                FTN.Seal cimSeal = cimSealPair.Value as FTN.Seal;
                 if (cimSeal == null)
                 {
-                    report.Report.AppendLine($"Seal with key={pair.Key} is null and FAILED to be converted");
-                    LogManager.Log($"Null Seal object in dictionary, key={pair.Key}", LogLevel.Warning);
+                    report.Report.AppendLine($"Seal with key={cimSealPair.Key} is null and FAILED to be converted");
+                    LogManager.Log($"Null Seal object in dictionary, key={cimSealPair.Key}", LogLevel.Warning);
                     continue;
                 }
 
@@ -148,6 +148,7 @@ namespace FTN.ESI.SIMES.CIM.CIMAdapter.Importer
         private ResourceDescription CreateSealResourceDescription(FTN.Seal cimSeal)
         {
             if (cimSeal == null) return null;
+
             long gid = ModelCodeHelper.CreateGlobalId(0, (short)DMSType.SEAL, importHelper.CheckOutIndexForDMSType(DMSType.SEAL));
             ResourceDescription rd = new ResourceDescription(gid);
             importHelper.DefineIDMapping(cimSeal.ID, gid);
@@ -158,20 +159,21 @@ namespace FTN.ESI.SIMES.CIM.CIMAdapter.Importer
 
         private void ImportAssetFunctions()
         {
-            var cimAssetFunctions = concreteModel.GetAllObjectsOfType("FTN.AssetFunction");
+            SortedDictionary<string, object> cimAssetFunctions = concreteModel.GetAllObjectsOfType("FTN.AssetFunction");
+
             if (cimAssetFunctions == null)
             {
                 report.Report.AppendLine("No AssetFunction objects found.");
                 return;
             }
 
-            foreach (var pair in cimAssetFunctions)
+            foreach (KeyValuePair<string, object> cimAssetFunctionPair in cimAssetFunctions)
             {
-                FTN.AssetFunction cimAssetFunction = pair.Value as FTN.AssetFunction;
+                FTN.AssetFunction cimAssetFunction = cimAssetFunctionPair.Value as FTN.AssetFunction;
                 if (cimAssetFunction == null)
                 {
-                    report.Report.AppendLine($"AssetFunction with key={pair.Key} is null and FAILED");
-                    LogManager.Log($"Null AssetFunction, key={pair.Key}", LogLevel.Warning);
+                    report.Report.AppendLine($"AssetFunction with key={cimAssetFunctionPair.Key} is null and FAILED");
+                    LogManager.Log($"Null AssetFunction, key={cimAssetFunctionPair.Key}", LogLevel.Warning);
                     continue;
                 }
 
@@ -195,28 +197,31 @@ namespace FTN.ESI.SIMES.CIM.CIMAdapter.Importer
         private ResourceDescription CreateAssetFunctionResourceDescription(FTN.AssetFunction cimAssetFunction)
         {
             if (cimAssetFunction == null) return null;
+
             long gid = ModelCodeHelper.CreateGlobalId(0, (short)DMSType.ASSETFUNCTION, importHelper.CheckOutIndexForDMSType(DMSType.ASSETFUNCTION));
             ResourceDescription rd = new ResourceDescription(gid);
             importHelper.DefineIDMapping(cimAssetFunction.ID, gid);
+
             PowerTransformerConverter.PopulateAssetFunctionProperties(cimAssetFunction, rd);
             return rd;
         }
 
         private void ImportManufacturers()
         {
-            var cimManufacturers = concreteModel.GetAllObjectsOfType("FTN.Manufacturer");
+            SortedDictionary<string, object> cimManufacturers = concreteModel.GetAllObjectsOfType("FTN.Manufacturer");
+
             if (cimManufacturers == null)
             {
                 report.Report.AppendLine("No Manufacturer objects found.");
                 return;
             }
 
-            foreach (var pair in cimManufacturers)
+            foreach (KeyValuePair<string, object> cimManufacturerPair in cimManufacturers)
             {
-                FTN.Manufacturer cimManufacturer = pair.Value as FTN.Manufacturer;
+                FTN.Manufacturer cimManufacturer = cimManufacturerPair.Value as FTN.Manufacturer;
                 if (cimManufacturer == null)
                 {
-                    report.Report.AppendLine($"Manufacturer with key={pair.Key} is null");
+                    report.Report.AppendLine($"Manufacturer with key={cimManufacturerPair.Key} is null");
                     continue;
                 }
 
@@ -240,6 +245,7 @@ namespace FTN.ESI.SIMES.CIM.CIMAdapter.Importer
         private ResourceDescription CreateManufacturerResourceDescription(FTN.Manufacturer cimManufacturer)
         {
             if (cimManufacturer == null) return null;
+
             long gid = ModelCodeHelper.CreateGlobalId(0, (short)DMSType.MANUFACTURER, importHelper.CheckOutIndexForDMSType(DMSType.MANUFACTURER));
             ResourceDescription rd = new ResourceDescription(gid);
             importHelper.DefineIDMapping(cimManufacturer.ID, gid);
@@ -249,19 +255,20 @@ namespace FTN.ESI.SIMES.CIM.CIMAdapter.Importer
 
         private void ImportProductAssetModels()
         {
-            var cimProductAssetModels = concreteModel.GetAllObjectsOfType("FTN.ProductAssetModel");
+            SortedDictionary<string, object> cimProductAssetModels = concreteModel.GetAllObjectsOfType("FTN.ProductAssetModel");
+
             if (cimProductAssetModels == null)
             {
                 report.Report.AppendLine("No ProductAssetModel objects found.");
                 return;
             }
 
-            foreach (var pair in cimProductAssetModels)
+            foreach (KeyValuePair<string, object> cimProductAssetModelPair in cimProductAssetModels)
             {
-                FTN.ProductAssetModel cimProduct = pair.Value as FTN.ProductAssetModel;
+                FTN.ProductAssetModel cimProduct = cimProductAssetModelPair.Value as FTN.ProductAssetModel;
                 if (cimProduct == null)
                 {
-                    report.Report.AppendLine($"ProductAssetModel key={pair.Key} null");
+                    report.Report.AppendLine($"ProductAssetModel key={cimProductAssetModelPair.Key} null");
                     continue;
                 }
 
@@ -285,28 +292,31 @@ namespace FTN.ESI.SIMES.CIM.CIMAdapter.Importer
         private ResourceDescription CreateProductAssetModelResourceDescription(FTN.ProductAssetModel cimProductAssetModel)
         {
             if (cimProductAssetModel == null) return null;
+
             long gid = ModelCodeHelper.CreateGlobalId(0, (short)DMSType.PRODUCTASSETMODEL, importHelper.CheckOutIndexForDMSType(DMSType.PRODUCTASSETMODEL));
             ResourceDescription rd = new ResourceDescription(gid);
             importHelper.DefineIDMapping(cimProductAssetModel.ID, gid);
+
             PowerTransformerConverter.PopulateProductAssetModelProperties(cimProductAssetModel, rd, importHelper, report);
             return rd;
         }
 
         private void ImportAssetOwners()
         {
-            var cimAssetOwners = concreteModel.GetAllObjectsOfType("FTN.AssetOwner");
+            SortedDictionary<string, object> cimAssetOwners = concreteModel.GetAllObjectsOfType("FTN.AssetOwner");
+
             if (cimAssetOwners == null)
             {
                 report.Report.AppendLine("No AssetOwner found.");
                 return;
             }
 
-            foreach (var pair in cimAssetOwners)
+            foreach (KeyValuePair<string, object> cimAssetOwnerPair in cimAssetOwners)
             {
-                FTN.AssetOwner cimAssetOwner = pair.Value as FTN.AssetOwner;
+                FTN.AssetOwner cimAssetOwner = cimAssetOwnerPair.Value as FTN.AssetOwner;
                 if (cimAssetOwner == null)
                 {
-                    report.Report.AppendLine($"AssetOwner key={pair.Key} null");
+                    report.Report.AppendLine($"AssetOwner key={cimAssetOwnerPair.Key} null");
                     continue;
                 }
 
@@ -330,28 +340,31 @@ namespace FTN.ESI.SIMES.CIM.CIMAdapter.Importer
         private ResourceDescription CreateAssetOwnerResourceDescription(FTN.AssetOwner cimAssetOwner)
         {
             if (cimAssetOwner == null) return null;
+
             long gid = ModelCodeHelper.CreateGlobalId(0, (short)DMSType.ASSETOWNER, importHelper.CheckOutIndexForDMSType(DMSType.ASSETOWNER));
             ResourceDescription rd = new ResourceDescription(gid);
             importHelper.DefineIDMapping(cimAssetOwner.ID, gid);
+
             PowerTransformerConverter.PopulateAssetOwnerProperties(cimAssetOwner, rd);
             return rd;
         }
 
         private void ImportAssets()
         {
-            var cimAssets = concreteModel.GetAllObjectsOfType("FTN.Asset");
+            SortedDictionary<string, object> cimAssets = concreteModel.GetAllObjectsOfType("FTN.Asset");
+
             if (cimAssets == null)
             {
                 report.Report.AppendLine("No Asset objects found.");
                 return;
             }
 
-            foreach (var pair in cimAssets)
+            foreach (KeyValuePair<string, object> assetPair in cimAssets)
             {
-                FTN.Asset cimAsset = pair.Value as FTN.Asset;
+                FTN.Asset cimAsset = assetPair.Value as FTN.Asset;
                 if (cimAsset == null)
                 {
-                    report.Report.AppendLine($"Asset key={pair.Key} null");
+                    report.Report.AppendLine($"Asset key={assetPair.Key} null");
                     continue;
                 }
 
@@ -375,9 +388,11 @@ namespace FTN.ESI.SIMES.CIM.CIMAdapter.Importer
         private ResourceDescription CreateAssetResourceDescription(FTN.Asset cimAsset)
         {
             if (cimAsset == null) return null;
+
             long gid = ModelCodeHelper.CreateGlobalId(0, (short)DMSType.ASSET, importHelper.CheckOutIndexForDMSType(DMSType.ASSET));
             ResourceDescription rd = new ResourceDescription(gid);
             importHelper.DefineIDMapping(cimAsset.ID, gid);
+
             PowerTransformerConverter.PopulateAssetProperties(cimAsset, rd, importHelper, report);
             return rd;
         }

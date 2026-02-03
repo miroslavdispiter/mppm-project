@@ -30,56 +30,6 @@
             }
         }
 
-        public static void PopulateSealProperties(FTN.Seal cimSeal, ResourceDescription rd)
-        {
-            if ((cimSeal != null) && (rd != null))
-            {
-                PowerTransformerConverter.PopulateIdentifiedObjectProperties(cimSeal, rd);
-
-                if (cimSeal.ConditionHasValue)
-                {
-                    rd.AddProperty(new Property(ModelCode.SEAL_CONDITION, (short)GetDMSSealConditionKind(cimSeal.Condition)));
-                }
-                if (cimSeal.KindHasValue)
-                {
-                    rd.AddProperty(new Property(ModelCode.SEAL_KIND, (short)GetDMSSealKind(cimSeal.Kind)));
-                }
-                if (cimSeal.SealNumberHasValue)
-                {
-                    rd.AddProperty(new Property(ModelCode.SEAL_SEALNUMBER, cimSeal.SealNumber));
-                }
-            }
-        }
-
-        public static void PopulateAssetFunctionProperties(FTN.AssetFunction cimAssetFunction, ResourceDescription rd)
-        {
-            if ((cimAssetFunction != null) && (rd != null))
-            {
-                PowerTransformerConverter.PopulateIdentifiedObjectProperties(cimAssetFunction, rd);
-
-                if (cimAssetFunction.ConfigIDHasValue)
-                {
-                    rd.AddProperty(new Property(ModelCode.ASSETFUNCTION_CONFIGID, cimAssetFunction.ConfigID));
-                }
-                if (cimAssetFunction.FirmwareIDHasValue)
-                {
-                    rd.AddProperty(new Property(ModelCode.ASSETFUNCTION_FIRMWAREID, cimAssetFunction.FirmwareID));
-                }
-                if (cimAssetFunction.HardwareIDHasValue)
-                {
-                    rd.AddProperty(new Property(ModelCode.ASSETFUNCTION_HARDWAREID, cimAssetFunction.HardwareID));
-                }
-                if (cimAssetFunction.PasswordHasValue)
-                {
-                    rd.AddProperty(new Property(ModelCode.ASSETFUNCTION_PASSWORD, cimAssetFunction.Password));
-                }
-                if (cimAssetFunction.ProgramIDHasValue)
-                {
-                    rd.AddProperty(new Property(ModelCode.ASSETFUNCTION_PROGRAMID, cimAssetFunction.ProgramID));
-                }
-            }
-        }
-
         public static void PopulateOrganisationRoleProperties(FTN.OrganisationRole cimOrganisationRole, ResourceDescription rd)
         {
             if ((cimOrganisationRole != null) && (rd != null))
@@ -88,19 +38,19 @@
             }
         }
 
-        public static void PopulateManufacturerProperties(FTN.Manufacturer cimManufacturer, ResourceDescription rd)
-        {
-            if ((cimManufacturer != null) && (rd != null))
-            {
-                PowerTransformerConverter.PopulateOrganisationRoleProperties(cimManufacturer, rd);
-            }
-        }
-
         public static void PopulateAssetOrganisationRoleProperties(FTN.AssetOrganisationRole cimAssetOrganisationRole, ResourceDescription rd)
-        {
+        {   // da li ne treba referenca tu?
             if ((cimAssetOrganisationRole != null) && (rd != null))
             {
                 PowerTransformerConverter.PopulateOrganisationRoleProperties(cimAssetOrganisationRole, rd);
+            }
+        }
+
+        public static void PopulateManufacturerProperties(FTN.Manufacturer cimManufacturer, ResourceDescription rd)
+        {   // da li ne treba referenca ?
+            if ((cimManufacturer != null) && (rd != null))
+            {
+                PowerTransformerConverter.PopulateOrganisationRoleProperties(cimManufacturer, rd);
             }
         }
 
@@ -109,6 +59,26 @@
             if ((cimAssetOwner != null) && (rd != null))
             {
                 PowerTransformerConverter.PopulateAssetOrganisationRoleProperties(cimAssetOwner, rd);
+            }
+        }
+
+        public static void PopulateAssetInfoProperties(FTN.AssetInfo cimAssetInfo, ResourceDescription rd, ImportHelper importHelper, TransformAndLoadReport report)
+        {
+            if ((cimAssetInfo != null) && (rd != null))
+            {
+                PopulateIdentifiedObjectProperties(cimAssetInfo, rd);
+
+                if (cimAssetInfo.AssetModelHasValue)
+                {
+                    long gid = importHelper.GetMappedGID(cimAssetInfo.AssetModel.ID);
+                    if (gid < 0)
+                    {
+                        report.Report.Append("WARNING: Convert ").Append(cimAssetInfo.GetType().ToString())
+                              .Append(" rdfID = \"").Append(cimAssetInfo.ID).Append("\" - Failed to set reference to AssetModel: rdfID \"")
+                              .Append(cimAssetInfo.AssetModel.ID).AppendLine("\" is not mapped to GID!");
+                    }
+                    rd.AddProperty(new Property(ModelCode.ASSETINFO_ASSETMODEL, gid));
+                }
             }
         }
 
@@ -155,6 +125,56 @@
             }
         }
 
+        public static void PopulateAssetFunctionProperties(FTN.AssetFunction cimAssetFunction, ResourceDescription rd)
+        {
+            if ((cimAssetFunction != null) && (rd != null))
+            {
+                PowerTransformerConverter.PopulateIdentifiedObjectProperties(cimAssetFunction, rd);
+
+                if (cimAssetFunction.ConfigIDHasValue)
+                {
+                    rd.AddProperty(new Property(ModelCode.ASSETFUNCTION_CONFIGID, cimAssetFunction.ConfigID));
+                }
+                if (cimAssetFunction.FirmwareIDHasValue)
+                {
+                    rd.AddProperty(new Property(ModelCode.ASSETFUNCTION_FIRMWAREID, cimAssetFunction.FirmwareID));
+                }
+                if (cimAssetFunction.HardwareIDHasValue)
+                {
+                    rd.AddProperty(new Property(ModelCode.ASSETFUNCTION_HARDWAREID, cimAssetFunction.HardwareID));
+                }
+                if (cimAssetFunction.PasswordHasValue)
+                {
+                    rd.AddProperty(new Property(ModelCode.ASSETFUNCTION_PASSWORD, cimAssetFunction.Password));
+                }
+                if (cimAssetFunction.ProgramIDHasValue)
+                {
+                    rd.AddProperty(new Property(ModelCode.ASSETFUNCTION_PROGRAMID, cimAssetFunction.ProgramID));
+                }
+            }
+        }
+
+        public static void PopulateSealProperties(FTN.Seal cimSeal, ResourceDescription rd)
+        {
+            if ((cimSeal != null) && (rd != null))
+            {
+                PowerTransformerConverter.PopulateIdentifiedObjectProperties(cimSeal, rd);
+
+                if (cimSeal.ConditionHasValue)
+                {
+                    rd.AddProperty(new Property(ModelCode.SEAL_CONDITION, (short)GetDMSSealConditionKind(cimSeal.Condition)));
+                }
+                if (cimSeal.KindHasValue)
+                {
+                    rd.AddProperty(new Property(ModelCode.SEAL_KIND, (short)GetDMSSealKind(cimSeal.Kind)));
+                }
+                if (cimSeal.SealNumberHasValue)
+                {
+                    rd.AddProperty(new Property(ModelCode.SEAL_SEALNUMBER, cimSeal.SealNumber));
+                }
+            }
+        }
+
         public static void PopulateAssetProperties(FTN.Asset cimAsset, ResourceDescription rd, ImportHelper importHelper, TransformAndLoadReport report)
         {
             if ((cimAsset != null) && (rd != null))
@@ -184,6 +204,35 @@
                 if (cimAsset.UtcNumberHasValue)
                 {
                     rd.AddProperty(new Property(ModelCode.ASSET_UTCNUMBER, cimAsset.UtcNumber));
+                }
+
+                if (cimAsset.AssetInfoHasValue)
+                {
+                    long gid = importHelper.GetMappedGID(cimAsset.AssetInfo.ID);
+                    if (gid < 0)
+                    {
+                        report.Report.Append("WARNING: Convert ").Append(cimAsset.GetType().ToString())
+                              .Append(" rdfID = \"").Append(cimAsset.ID).Append("\" - Failed to set reference to AssetInfo: rdfID \"")
+                              .Append(cimAsset.AssetInfo.ID).AppendLine("\" is not mapped to GID!");
+                    }
+                    rd.AddProperty(new Property(ModelCode.ASSET_ASSETINFO, gid));
+                }
+
+                if (cimAsset.OrganisationRolesHasValue)
+                {
+                    List<long> roles = new List<long>();
+                    foreach (FTN.AssetOrganisationRole role in cimAsset.OrganisationRoles)
+                    {
+                        long gid = importHelper.GetMappedGID(role.ID);
+                        if (gid < 0)
+                        {
+                            report.Report.Append("WARNING: Convert ").Append(cimAsset.GetType().ToString())
+                                  .Append(" rdfID = \"").Append(cimAsset.ID).Append("\" - Failed to set reference to AssetOrganisationRole: rdfID \"")
+                                  .Append(role.ID).AppendLine("\" is not mapped to GID!");
+                        }
+                        roles.Add(gid);
+                    }
+                    rd.AddProperty(new Property(ModelCode.ASSET_ORGANISATIONROLES, roles));
                 }
             }
         }
