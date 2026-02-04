@@ -344,6 +344,100 @@ namespace TelventDMS.Services.NetworkModelService.TestClient.Tests
             }
         }
 
+        public void ShowManufacturersForAllModels()
+        {
+            Console.WriteLine("Fetching all ProductAssetModels and their Manufacturers...");
+            XmlTextWriter xmlWriter = null;
+            string filePath = Config.Instance.ResultDirecotry + "\\ShowManufacturersForAllModels_Results.xml";
+
+            try
+            {
+                xmlWriter = new XmlTextWriter(filePath, Encoding.Unicode);
+                xmlWriter.Formatting = Formatting.Indented;
+                xmlWriter.WriteStartDocument();
+                xmlWriter.WriteStartElement("ProductModelsToManufacturers");
+
+                List<ModelCode> props = new List<ModelCode>()
+                {
+                    ModelCode.IDOBJ_NAME,
+                    ModelCode.PRODUCTASSETMODEL_MANUFACTURER
+                };
+
+                int iteratorId = GdaQueryProxy.GetExtentValues(ModelCode.PRODUCTASSETMODEL, props);
+                int left = GdaQueryProxy.IteratorResourcesLeft(iteratorId);
+
+                while (left > 0)
+                {
+                    List<ResourceDescription> batch = GdaQueryProxy.IteratorNext(left, iteratorId);
+
+                    foreach (var model in batch)
+                    {
+                        string modelName = model.GetProperty(ModelCode.IDOBJ_NAME).AsString();
+                        long modelGid = model.Id;
+
+                        Console.WriteLine($"\nProduct Model: {modelName} (GID=0x{modelGid:X16})");
+
+                        Association assoc = new Association()
+                        {
+                            PropertyId = ModelCode.PRODUCTASSETMODEL_MANUFACTURER,
+                            Type = ModelCode.MANUFACTURER
+                        };
+
+                        int relIteratorId = GdaQueryProxy.GetRelatedValues(modelGid,
+                            new List<ModelCode> { ModelCode.IDOBJ_NAME, ModelCode.IDOBJ_ALIASNAME, ModelCode.IDOBJ_MRID },
+                            assoc);
+
+                        int relLeft = GdaQueryProxy.IteratorResourcesLeft(relIteratorId);
+                        if (relLeft == 0)
+                        {
+                            Console.WriteLine("   (no manufacturer assigned)");
+                        }
+
+                        xmlWriter.WriteStartElement("ProductModel");
+                        xmlWriter.WriteAttributeString("Name", modelName);
+
+                        while (relLeft > 0)
+                        {
+                            List<ResourceDescription> relBatch = GdaQueryProxy.IteratorNext(relLeft, relIteratorId);
+
+                            foreach (var rd in relBatch)
+                            {
+                                string manName = rd.GetProperty(ModelCode.IDOBJ_NAME).AsString();
+                                string alias = rd.GetProperty(ModelCode.IDOBJ_ALIASNAME).AsString();
+                                string mrid = rd.GetProperty(ModelCode.IDOBJ_MRID).AsString();
+
+                                Console.WriteLine($"   → Manufacturer: {manName}  (Alias: {alias}, MRID: {mrid})");
+
+                                rd.ExportToXml(xmlWriter);
+                            }
+
+                            relLeft = GdaQueryProxy.IteratorResourcesLeft(relIteratorId);
+                        }
+
+                        GdaQueryProxy.IteratorClose(relIteratorId);
+                        xmlWriter.WriteEndElement();
+                    }
+
+                    left = GdaQueryProxy.IteratorResourcesLeft(iteratorId);
+                }
+
+                GdaQueryProxy.IteratorClose(iteratorId);
+
+                xmlWriter.WriteEndElement();
+                xmlWriter.WriteEndDocument();
+                xmlWriter.Flush();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"ShowManufacturersForAllModels failed: {ex.Message}");
+            }
+            finally
+            {
+                if (xmlWriter != null)
+                    xmlWriter.Close();
+            }
+        }
+
         #endregion GDAQueryService
 
         #region Test Methods

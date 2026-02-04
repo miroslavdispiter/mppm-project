@@ -135,6 +135,19 @@ namespace FTN.Services.NetworkModelService.TestClient
                             CommonTrace.WriteTrace(CommonTrace.TraceError, message);
                         }
                     }
+                    else if (str == "7")
+                    {
+                        try
+                        {
+                            tgda.ShowManufacturersForAllModels();
+                        }
+                        catch (Exception ex)
+                        {
+                            message = $"ShowManufacturersForAllModels failed. {ex.Message}";
+                            Console.WriteLine(message);
+                            CommonTrace.WriteTrace(CommonTrace.TraceError, message);
+                        }
+                    }
                     else if (str != "q")
 					{
 						PrintUnknownOption();
@@ -164,6 +177,7 @@ namespace FTN.Services.NetworkModelService.TestClient
             Console.WriteLine("\t4) Test apply update");
             Console.WriteLine("\t5) Show all critical assets");
             Console.WriteLine("\t6) Show most common ProductAssetModel usageKind");
+            Console.WriteLine("\t7) Show Manufacturers for all ProductAssetModels");
             Console.WriteLine("\tq) Quit");
 		}
 
