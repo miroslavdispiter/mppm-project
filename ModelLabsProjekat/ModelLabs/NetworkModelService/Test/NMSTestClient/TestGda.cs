@@ -211,6 +211,139 @@ namespace TelventDMS.Services.NetworkModelService.TestClient.Tests
 			return resultIds;
 		}
 
+        public void ShowCriticalAssets()
+        {
+            XmlTextWriter xmlWriter = null;
+            string filePath = Config.Instance.ResultDirecotry + "\\ShowCriticalAssets_Results.xml";
+
+            try
+            {
+                xmlWriter = new XmlTextWriter(filePath, Encoding.Unicode);
+                xmlWriter.Formatting = Formatting.Indented;
+                xmlWriter.WriteStartDocument();
+                xmlWriter.WriteStartElement("CriticalAssets");
+
+                List<ModelCode> props = new List<ModelCode>()
+                {
+                    ModelCode.IDOBJ_NAME,
+                    ModelCode.IDOBJ_ALIASNAME,
+                    ModelCode.ASSET_CRITICAL,
+                    ModelCode.ASSET_SERIALNUMBER,
+                    ModelCode.ASSET_LOTNUMBER
+                };
+
+                int iteratorId = GdaQueryProxy.GetExtentValues(ModelCode.ASSET, props);
+                int left = GdaQueryProxy.IteratorResourcesLeft(iteratorId);
+
+                while (left > 0)
+                {
+                    List<ResourceDescription> batch = GdaQueryProxy.IteratorNext(left, iteratorId);
+
+                    foreach (var rd in batch)
+                    {
+                        bool isCritical = rd.GetProperty(ModelCode.ASSET_CRITICAL).AsBool();
+                        if (isCritical)
+                        {
+                            string name = rd.GetProperty(ModelCode.IDOBJ_NAME).AsString();
+                            string serial = rd.GetProperty(ModelCode.ASSET_SERIALNUMBER).AsString();
+                            string lot = rd.GetProperty(ModelCode.ASSET_LOTNUMBER).AsString();
+
+                            rd.ExportToXml(xmlWriter);
+                        }
+                    }
+                    left = GdaQueryProxy.IteratorResourcesLeft(iteratorId);
+                }
+
+                GdaQueryProxy.IteratorClose(iteratorId);
+
+                xmlWriter.WriteEndElement();
+                xmlWriter.WriteEndDocument();
+                xmlWriter.Flush();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"ShowCriticalAssets failed: {ex.Message}");
+            }
+            finally
+            {
+                if (xmlWriter != null)
+                    xmlWriter.Close();
+            }
+        }
+
+        public void ShowMostCommonUsageKind()
+        {
+            XmlTextWriter xmlWriter = null;
+            string filePath = Config.Instance.ResultDirecotry + "\\ShowMostCommonUsageKind_Results.xml";
+
+            try
+            {
+                xmlWriter = new XmlTextWriter(filePath, Encoding.Unicode);
+                xmlWriter.Formatting = Formatting.Indented;
+                xmlWriter.WriteStartDocument();
+                xmlWriter.WriteStartElement("UsageKindStatistics");
+
+                List<ModelCode> props = new List<ModelCode>()
+                {
+                    ModelCode.PRODUCTASSETMODEL_USAGEKIND,
+                    ModelCode.IDOBJ_NAME
+                };
+
+                int iteratorId = GdaQueryProxy.GetExtentValues(ModelCode.PRODUCTASSETMODEL, props);
+                int left = GdaQueryProxy.IteratorResourcesLeft(iteratorId);
+
+                Dictionary<string, int> usageCount = new Dictionary<string, int>();
+
+                while (left > 0)
+                {
+                    List<ResourceDescription> batch = GdaQueryProxy.IteratorNext(left, iteratorId);
+
+                    foreach (var rd in batch)
+                    {
+                        rd.ExportToXml(xmlWriter);
+
+                        short usageVal = rd.GetProperty(ModelCode.PRODUCTASSETMODEL_USAGEKIND).AsEnum();
+                        string usage = ((AssetModelUsageKind)usageVal).ToString();
+
+                        if (!usageCount.ContainsKey(usage))
+                            usageCount[usage] = 0;
+                        usageCount[usage]++;
+                    }
+
+                    left = GdaQueryProxy.IteratorResourcesLeft(iteratorId);
+                }
+
+                GdaQueryProxy.IteratorClose(iteratorId);
+
+                if (usageCount.Count > 0)
+                {
+                    var top = usageCount.OrderByDescending(u => u.Value).First();
+                    xmlWriter.WriteStartElement("MostCommonUsageKind");
+                    xmlWriter.WriteAttributeString("Value", top.Key);
+                    xmlWriter.WriteAttributeString("Count", top.Value.ToString());
+                    xmlWriter.WriteEndElement();
+                }
+                else
+                {
+                    xmlWriter.WriteElementString("Message", "No ProductAssetModel elements found.");
+                    Console.WriteLine("No ProductAssetModel elements found.");
+                }
+
+                xmlWriter.WriteEndElement();
+                xmlWriter.WriteEndDocument();
+                xmlWriter.Flush();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"ShowMostCommonUsageKind failed: {ex.Message}");
+            }
+            finally
+            {
+                if (xmlWriter != null)
+                    xmlWriter.Close();
+            }
+        }
+
         #endregion GDAQueryService
 
         #region Test Methods

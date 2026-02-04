@@ -36,7 +36,7 @@
         <cim:ProductAssetModel.Manufacturer rdf:resource="#Manufacturer2"/>
         <cim:ProductAssetModel.modelNumber>TX250</cim:ProductAssetModel.modelNumber>
         <cim:ProductAssetModel.modelVersion>2.1</cim:ProductAssetModel.modelVersion>
-        <cim:ProductAssetModel.usageKind>substation</cim:ProductAssetModel.usageKind>
+        <cim:ProductAssetModel.usageKind>transmission</cim:ProductAssetModel.usageKind>
         <cim:IdentifiedObject.aliasName>Model TX250</cim:IdentifiedObject.aliasName>
         <cim:IdentifiedObject.mRID>pamodel-002</cim:IdentifiedObject.mRID>
         <cim:IdentifiedObject.name>Substation Model Experimental</cim:IdentifiedObject.name>

@@ -80,5 +80,47 @@ namespace FTN.Services.NetworkModelService.DataModel.Assets
                 default: base.SetProperty(property); break;
             }
         }
+
+        public override bool IsReferenced => base.IsReferenced;
+
+        public override void GetReferences(Dictionary<ModelCode, List<long>> references, TypeOfReference refType)
+        {
+            if (manufacturer != 0 &&
+                (refType == TypeOfReference.Reference || refType == TypeOfReference.Both))
+            {
+                references[ModelCode.PRODUCTASSETMODEL_MANUFACTURER] = new List<long> { manufacturer };
+            }
+
+            base.GetReferences(references, refType);
+        }
+
+        public override void AddReference(ModelCode referenceId, long globalId)
+        {
+            switch (referenceId)
+            {
+                case ModelCode.MANUFACTURER_PRODUCTASSETMODEL:
+                    manufacturer = globalId;
+                    break;
+
+                default:
+                    base.AddReference(referenceId, globalId);
+                    break;
+            }
+        }
+
+        public override void RemoveReference(ModelCode referenceId, long globalId)
+        {
+            switch (referenceId)
+            {
+                case ModelCode.MANUFACTURER_PRODUCTASSETMODEL:
+                    if (manufacturer == globalId)
+                        manufacturer = 0;
+                    break;
+
+                default:
+                    base.RemoveReference(referenceId, globalId);
+                    break;
+            }
+        }
     }
 }

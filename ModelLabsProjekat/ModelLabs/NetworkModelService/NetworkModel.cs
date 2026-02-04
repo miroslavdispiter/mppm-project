@@ -635,7 +635,12 @@ namespace FTN.Services.NetworkModelService
 
 		private void Initialize()
 		{
-			List<Delta> result = ReadAllDeltas();
+            if (File.Exists(Config.Instance.ConnectionString))
+            {
+                File.Delete(Config.Instance.ConnectionString);
+            }
+
+            List<Delta> result = ReadAllDeltas();
 
 			foreach (Delta delta in result)
 			{

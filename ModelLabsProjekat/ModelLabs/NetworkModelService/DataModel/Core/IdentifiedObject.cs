@@ -93,7 +93,7 @@ namespace FTN.Services.NetworkModelService.DataModel.Core
         public virtual void GetReferences(Dictionary<ModelCode, List<long>> references, TypeOfReference refType) { }
         public virtual void AddReference(ModelCode referenceId, long globalId) { }
         public virtual void RemoveReference(ModelCode referenceId, long globalId) { }
-
+        
         #endregion
     }
 }
