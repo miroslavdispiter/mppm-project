@@ -406,7 +406,7 @@ namespace TelventDMS.Services.NetworkModelService.TestClient.Tests
                                 string alias = rd.GetProperty(ModelCode.IDOBJ_ALIASNAME).AsString();
                                 string mrid = rd.GetProperty(ModelCode.IDOBJ_MRID).AsString();
 
-                                Console.WriteLine($"   → Manufacturer: {manName}  (Alias: {alias}, MRID: {mrid})");
+                                Console.WriteLine($"  Manufacturer: {manName}  (Alias: {alias}, MRID: {mrid})");
 
                                 rd.ExportToXml(xmlWriter);
                             }
